@@ -32,6 +32,9 @@ async function fetchWeatherDataByUrl(apiUrl) {
         }
 
         current_city_p2.textContent = `Wind: ${data.list[0].wind.speed} M/S`;
+        const mainWeatherCondition = data.list[0].weather[0].main;
+        updateBackground(mainWeatherCondition);
+
         current_city_p3.textContent = `Humidity: ${data.list[0].main.humidity}%`;
         current_city_img.src = `http://openweathermap.org/img/wn/${data.list[0].weather[0].icon}@2x.png`;
         current_city_p4.textContent = `${data.list[0].weather[0].description}`;
@@ -267,3 +270,23 @@ tempToggleBtn.addEventListener('click', () => {
         tempToggleBtn.textContent = '°C';
     }
 });
+
+function updateBackground(weatherCondition) {
+    const body = document.getElementById('app-body');
+    let imageUrl = 'images/default.jpg'; // Start with a default
+
+    // The API gives a general condition like "Clouds", "Rain", etc.
+    if (weatherCondition === 'Clear') {
+        imageUrl = 'images/clear.jpg';
+    } else if (weatherCondition === 'Clouds') {
+        imageUrl = 'images/clouds.jpg';
+    } else if (weatherCondition === 'Rain' || weatherCondition === 'Drizzle') {
+        imageUrl = 'images/rain.jpg';
+    } else if (weatherCondition === 'Snow') {
+        imageUrl = 'images/snow.jpg';
+    } else if (weatherCondition === 'Mist' || weatherCondition === 'Fog' || weatherCondition === 'Haze') {
+        imageUrl = 'images/mist.jpg';
+    }
+
+    body.style.backgroundImage = `url('${imageUrl}')`;
+}
