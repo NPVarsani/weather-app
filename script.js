@@ -104,7 +104,7 @@ async function fetchWeatherDataByUrl(apiUrl) {
     }
     catch (error) {
         console.log(error);
-
+        showError("City not found. Please try again.");
     }
     cityInputElement.value = "";
 }
@@ -118,7 +118,7 @@ searchBtn.addEventListener('click', () => {
     const cityName = cityInputElement.value;
 
     if (cityName === "") {
-        alert("Please enter a city name.");
+        showError("Please enter a city name.");
         return;
     }
 
@@ -185,7 +185,7 @@ function onSuccess(position) {
 
 // This function will run if there's an error
 function onError(error) {
-    alert("Unable to retrieve your location. Please try searching for a city manually.");
+    showError("Unable to retrieve your location. Please try searching for a city manually.");
     console.error("Geolocation error:", error);
 }
 
@@ -289,4 +289,18 @@ function updateBackground(weatherCondition) {
     }
 
     body.style.backgroundImage = `url('${imageUrl}')`;
+}
+
+function showError(message) {
+    const errorContainer = document.getElementById('error-container');
+
+    // Set the error message and make it visible
+    errorContainer.textContent = message;
+    errorContainer.className = "p-2 mb-4 bg-red-500 text-white rounded-md text-center"; // Add styling
+
+    // Hide the error message after 3 seconds
+    setTimeout(() => {
+        errorContainer.textContent = "";
+        errorContainer.className = "hidden"; // Hide it again
+    }, 3000); // 3000 milliseconds = 3 seconds
 }
