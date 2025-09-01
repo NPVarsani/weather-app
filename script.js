@@ -19,6 +19,18 @@ async function fetchWeatherDataByUrl(apiUrl) {
         current_city_h2.textContent = data.city.name + ` ( ${dateOnly} ) `;
         saveSearch(data.city.name);
         current_city_p1.textContent = `Temperature: ${data.list[0].main.temp}°C`;
+
+        // currentTemperatureCelsius += 10; // temp opration to check the warning fecture is work or not
+
+        const weatherAlert = document.getElementById('weather-alert');
+        if (currentTemperatureCelsius > 40) {
+            weatherAlert.textContent = "⚠️ Extreme heat warning!";
+            weatherAlert.className = "p-2 bg-red-500 text-white rounded-md text-center font-bold";
+        } else {
+            weatherAlert.textContent = ""; // Clear the alert
+            weatherAlert.className = ""; // Remove styling
+        }
+
         current_city_p2.textContent = `Wind: ${data.list[0].wind.speed} M/S`;
         current_city_p3.textContent = `Humidity: ${data.list[0].main.humidity}%`;
         current_city_img.src = `http://openweathermap.org/img/wn/${data.list[0].weather[0].icon}@2x.png`;
