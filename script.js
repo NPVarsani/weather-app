@@ -2,12 +2,18 @@
 const apiKey = 'd07349617bf44b32d522cb1642e27435';
 const city = 'Bhuj';
 
+let currentTemperatureCelsius = 0;
+let isCelsius = true;
+
 async function fetchWeatherDataByUrl(apiUrl) {
     // const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}&units=metric`; // url get from https://openweathermap.org/forecast5
     try {
         const response = await fetch(apiUrl);
         const data = await response.json();
         console.log(data);
+
+        currentTemperatureCelsius = data.list[0].main.temp;
+
         let dateOnly = data.list[0].dt_txt;
         dateOnly = dateOnly.split(' ')[0];
         current_city_h2.textContent = data.city.name + ` ( ${dateOnly} ) `;
@@ -226,3 +232,26 @@ function displayRecentSearches() {
 }
 
 displayRecentSearches();
+
+
+const tempToggleBtn = document.getElementById("temp-toggle-btn");
+tempToggleBtn.addEventListener('click', () => {
+    // Flip the boolean variable from true to false, or false to true
+    isCelsius = !isCelsius;
+
+    if (isCelsius) {
+        // If we are now showing Celsius:
+        // 1. Update the temperature text to show the original Celsius value
+        current_city_p1.textContent = `Temperature: ${currentTemperatureCelsius.toFixed(2)}°C`;
+        // 2. Change the button's text to prompt a switch to Fahrenheit
+        tempToggleBtn.textContent = '°F';
+    } else {
+        // If we are now showing Fahrenheit:
+        // 1. Calculate the Fahrenheit temperature
+        const fahrenheitTemp = (currentTemperatureCelsius * 9 / 5) + 32;
+        // 2. Update the temperature text to show the new Fahrenheit value
+        current_city_p1.textContent = `Temperature: ${fahrenheitTemp.toFixed(2)}°F`;
+        // 3. Change the button's text to prompt a switch back to Celsius
+        tempToggleBtn.textContent = '°C';
+    }
+});
