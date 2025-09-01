@@ -190,4 +190,39 @@ function saveSearch(cityName) {
 
     // Save the updated list back to localStorage
     localStorage.setItem('weatherSearches', JSON.stringify(searches));
+    displayRecentSearches();
 }
+
+
+function displayRecentSearches() {
+    const searches = JSON.parse(localStorage.getItem('weatherSearches')) || [];
+    const container = document.getElementById('recent-searches-container');
+
+    // Clear any old list items before displaying the new list
+    container.innerHTML = '';
+
+    // If there are no searches, don't display anything
+    if (searches.length === 0) return;
+
+    // Create the list and add styling
+    const list = document.createElement('ul');
+    list.className = 'space-y-2';
+
+    // Loop through each saved city and create a list item for it
+    searches.forEach(city => {
+        const listItem = document.createElement('li');
+        listItem.textContent = city;
+        listItem.className = 'p-2 bg-gray-100 rounded-md cursor-pointer hover:bg-gray-200';
+
+        // Add a click listener to each city in the list
+        listItem.addEventListener('click', () => {
+            const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
+            fetchWeatherDataByUrl(apiUrl);
+        });
+        list.appendChild(listItem);
+    });
+
+    container.appendChild(list);
+}
+
+displayRecentSearches();
