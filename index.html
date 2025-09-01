@@ -16,16 +16,36 @@
         <h1 class="text-3xl text-center p-4">
             Weather Application Dashboard</h1>
     </header>
-    <main class="flex">
-        <div class="flex flex-col gap-y-4">
-            <div>
-                <label for="city">City Name : </label>
-                <input type=" text" id="city" class="p-2 border rounded-md">
+    <main class="flex p-4 gap-4">
+        <div class="flex flex-col gap-y-4 p-4 w-96 bg-white rounded-lg shadow-md">
+            <div class="flex items-center">
+                <label for="city-input" class="font-medium mr-2">CityName </label>
+                <input type="text" id="city-input" class="p-2 border rounded-md w-full"
+                    placeholder="E.g., Bhuj, Ahmedabad">
             </div>
-            <button class="p-2 bg-blue-500 text-white rounded-md">Search</button>
-            <button class="p-2 bg-gray-500 text-white rounded-md">Use Current Location</button>
+            <button id="search-btn" class="p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Search</button>
+            <div class="relative text-center">
+
+                <hr class="absolute top-1/2 w-full">
+                <span class="relative bg-gray-100 px-2 text-sm text-gray-500">or</span>
+            </div>
+            <button id="location-btn" class="p-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">Use Current
+                Location</button>
         </div>
-        <div></div>
+        <div class="flex-grow">
+            <div class="bg-blue-500 text-white p-4 rounded-lg flex justify-between items-center">
+                <div>
+                    <h2 class="text-2xl font-bold">Bhuj (2025-09-01)</h2>
+                    <p>Temperature: 7.08°C</p>
+                    <p>Wind: 2.85 M/S</p>
+                    <p>Humidity: 88%</p>
+                </div>
+                <div class="text-center">
+                    <img src="http://openweathermap.org/img/wn/10d@2x.png" alt="weather icon">
+                    <p>Light Rain</p>
+                </div>
+            </div>
+        </div>
     </main>
 
     <script src="script.js"></script>
