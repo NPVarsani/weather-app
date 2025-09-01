@@ -11,6 +11,7 @@ async function fetchWeatherDataByUrl(apiUrl) {
         let dateOnly = data.list[0].dt_txt;
         dateOnly = dateOnly.split(' ')[0];
         current_city_h2.textContent = data.city.name + ` ( ${dateOnly} ) `;
+        saveSearch(data.city.name);
         current_city_p1.textContent = `Temperature: ${data.list[0].main.temp}°C`;
         current_city_p2.textContent = `Wind: ${data.list[0].wind.speed} M/S`;
         current_city_p3.textContent = `Humidity: ${data.list[0].main.humidity}%`;
@@ -84,6 +85,7 @@ async function fetchWeatherDataByUrl(apiUrl) {
         console.log(error);
 
     }
+    cityInputElement.value = "";
 }
 
 fetchWeatherDataByUrl(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`);
@@ -170,4 +172,22 @@ function onError(error) {
 function getWeatherByCoordinates(latitude, longitude) {
     const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
     fetchWeatherDataByUrl(apiUrl); // We'll create this function next
+}
+
+function saveSearch(cityName) {
+
+    let searches = JSON.parse(localStorage.getItem('weatherSearches')) || [];
+
+    // Add the new city to the beginning of the list, only if it's not already there
+    if (!searches.includes(cityName)) {
+        searches.unshift(cityName);
+    }
+
+    // Keep the list at a maximum of 5 cities
+    if (searches.length > 5) {
+        searches.pop();
+    }
+
+    // Save the updated list back to localStorage
+    localStorage.setItem('weatherSearches', JSON.stringify(searches));
 }
