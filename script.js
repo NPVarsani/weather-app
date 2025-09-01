@@ -2,8 +2,8 @@
 const apiKey = 'd07349617bf44b32d522cb1642e27435';
 const city = 'Bhuj';
 
-async function fetchWeatherData(cityName) {
-    const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}&units=metric`; // url get from https://openweathermap.org/forecast5
+async function fetchWeatherDataByUrl(apiUrl) {
+    // const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}&units=metric`; // url get from https://openweathermap.org/forecast5
     try {
         const response = await fetch(apiUrl);
         const data = await response.json();
@@ -86,13 +86,15 @@ async function fetchWeatherData(cityName) {
     }
 }
 
-fetchWeatherData(city);
+fetchWeatherDataByUrl(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`);
 const cityInputElement = document.getElementById('city-input');
 const searchBtn = document.getElementById('search-btn');
 
 searchBtn.addEventListener('click', () => {
     const cityName = cityInputElement.value; // Gets the text from the input box
-    fetchWeatherData(cityName); // We'll update this function next
+    // fetchWeatherDataByUrl(cityName); // We'll update this function next
+    const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}&units=metric`;
+    fetchWeatherDataByUrl(apiUrl);
 });
 
 const current_city_h2 = document.getElementById('current_city_h2');
@@ -131,3 +133,34 @@ const forecast_date_1_img = document.getElementById('forecast_date_1_img');
 const forecast_date_1_p2 = document.getElementById('forecast_date_1_p2');
 const forecast_date_1_p3 = document.getElementById('forecast_date_1_p3');
 const forecast_date_1_p4 = document.getElementById('forecast_date_1_p4');
+
+
+const locationBtn = document.getElementById('location-btn');
+
+
+locationBtn.addEventListener('click', () => {
+    navigator.geolocation.getCurrentPosition(onSuccess, onError);
+});
+
+// This function will run if the browser successfully gets the location
+function onSuccess(position) {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+
+    // console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+    getWeatherByCoordinates(latitude, longitude);
+    // Next, we'll use these coordinates to call the weather API
+
+}
+
+// This function will run if there's an error
+function onError(error) {
+    alert("Unable to retrieve your location. Please try searching for a city manually.");
+    console.error("Geolocation error:", error);
+}
+
+// New function to handle fetching by coordinates
+function getWeatherByCoordinates(latitude, longitude) {
+    const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
+    fetchWeatherDataByUrl(apiUrl); // We'll create this function next
+}
