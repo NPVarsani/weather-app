@@ -91,7 +91,14 @@ const cityInputElement = document.getElementById('city-input');
 const searchBtn = document.getElementById('search-btn');
 
 searchBtn.addEventListener('click', () => {
-    const cityName = cityInputElement.value; // Gets the text from the input box
+
+    const cityName = cityInputElement.value;
+
+    if (cityName === "") {
+        alert("Please enter a city name.");
+        return;
+    }
+
     // fetchWeatherDataByUrl(cityName); // We'll update this function next
     const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}&units=metric`;
     fetchWeatherDataByUrl(apiUrl);
