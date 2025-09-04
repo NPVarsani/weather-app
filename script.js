@@ -1,5 +1,5 @@
 // Sensitive Information 
-const apiKey = 'd07349617bf44b32d522cb1642e27435';
+const apiKey = 'API-KEY';
 const city = 'Bhuj';
 
 let currentTemperatureCelsius = 0;
